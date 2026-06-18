@@ -15,15 +15,18 @@ public class EarthquakeDetectionService {
     private final EarthquakeAlertRepository earthquakeAlertRepository;
     private final SensorReadingRepository sensorReadingRepository;
     private final EpicenterEstimator epicenterEstimator;
+    private final GeocodingService geocodingService;
 
     public EarthquakeDetectionService(
             EarthquakeAlertRepository earthquakeAlertRepository,
             SensorReadingRepository sensorReadingRepository,
-            EpicenterEstimator epicenterEstimator) {
+            EpicenterEstimator epicenterEstimator,
+            GeocodingService geocodingService) {
 
         this.earthquakeAlertRepository = earthquakeAlertRepository;
         this.sensorReadingRepository = sensorReadingRepository;
         this.epicenterEstimator = epicenterEstimator;
+        this.geocodingService = geocodingService;
     }
 
     public void detectEarthquake(List<SensorReading> readings) {
@@ -43,10 +46,13 @@ public class EarthquakeDetectionService {
 
             double averageMagnitude = totalMagnitude / readings.size();
 
+            String areaName = geocodingService.getAreaName(epicenter[0],epicenter[1]);
+
             EarthquakeAlert alert = new EarthquakeAlert();
             alert.setEpicenterLatitude(epicenter[0]);
             alert.setEpicenterLongitude(epicenter[1]);
             alert.setEstimatedMagnitude(averageMagnitude);
+            alert.setAreaName(areaName);
             alert.setCreatedAt(LocalDateTime.now());
             alert.setStatus(AlertStatus.UNDER_REVIEW);
 

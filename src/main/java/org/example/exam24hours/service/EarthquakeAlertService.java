@@ -4,14 +4,33 @@ import org.example.exam24hours.model.AlertStatus;
 import org.example.exam24hours.model.EarthquakeAlert;
 import org.example.exam24hours.repository.EarthquakeAlertRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
+
+import java.util.List;
 
 @Service
 public class EarthquakeAlertService {
     private final EarthquakeAlertRepository earthquakeAlertRepository;
+    private final ResourceUrlProvider resourceUrlProvider;
 
-    public EarthquakeAlertService(EarthquakeAlertRepository earthquakeAlertRepository) {
+    public EarthquakeAlertService(EarthquakeAlertRepository earthquakeAlertRepository, ResourceUrlProvider resourceUrlProvider) {
         this.earthquakeAlertRepository = earthquakeAlertRepository;
+        this.resourceUrlProvider = resourceUrlProvider;
     }
+
+    public List<EarthquakeAlert> getAllAlerts(){
+        return earthquakeAlertRepository.findAll();
+    }
+
+    public EarthquakeAlert getAlert(Long id){
+        return earthquakeAlertRepository.findById(id)
+                .orElseThrow();
+    }
+
+    public List<EarthquakeAlert> getActiveAlerts(){
+        return earthquakeAlertRepository.findByStatus(AlertStatus.ACTIVE);
+    }
+
 
     public void updateStatus(Long alertId, AlertStatus newStatus) {
         EarthquakeAlert alert = earthquakeAlertRepository

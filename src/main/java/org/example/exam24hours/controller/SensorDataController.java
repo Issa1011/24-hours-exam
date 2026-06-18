@@ -2,6 +2,7 @@ package org.example.exam24hours.controller;
 
 import org.example.exam24hours.dto.SensorLocationDTO;
 import org.example.exam24hours.dto.SensorReadingDTO;
+import org.example.exam24hours.model.SensorReading;
 import org.example.exam24hours.service.SensorDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,11 @@ public class SensorDataController {
         sensorDataService.saveReadings(readings);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping()
+    public List<SensorReading> getAllReadings(){
+        return sensorDataService.getAllReadings();
     }
 }
 

@@ -57,7 +57,10 @@ public class SensorDataService {
         if (currentRequestReading.size() == 3) {
             earthquakeDetectionService.detectEarthquake(currentRequestReading);
         }
+    }
 
+    public List<SensorReading> getAllReadings(){
+        return sensorReadingRepository.findAll();
     }
 }
 

@@ -7,11 +7,91 @@ import java.util.List;
 
 @Component
 public class DefaultEpicenterEstimator implements EpicenterEstimator {
-
     @Override
     public double[] estimateEpicenter(List<SensorReading> readings) {
 
-        return new double[]{0, 0};
+        if (readings == null || readings.size() < 3) {
+            throw new IllegalArgumentException(
+                    "Der skal være mindst tre målinger.");
+        }
 
+        SensorReading ref = readings.get(0);
+
+        double refLatRad =
+                Math.toRadians(ref.getSensor().getLatitude());
+
+        double refLonRad =
+                Math.toRadians(ref.getSensor().getLongitude());
+
+        double earthRadius = 6371.0;
+
+        double[] x = new double[3];
+        double[] y = new double[3];
+        double[] d = new double[3];
+
+        for (int i = 0; i < 3; i++) {
+            SensorReading reading = readings.get(i);
+
+            double latRad =
+                    Math.toRadians(reading.getSensor().getLatitude());
+
+            double lonRad =
+                    Math.toRadians(reading.getSensor().getLongitude());
+
+            x[i] = earthRadius * (lonRad - refLonRad)
+                    * Math.cos(refLatRad);
+
+            y[i] = earthRadius * (latRad - refLatRad);
+
+            d[i] = reading.getEstimatedDistanceToEpicenterKm();
+        }
+
+        double A = 2 * (x[1] - x[0]);
+        double B = 2 * (y[1] - y[0]);
+
+        double C =
+                d[0] * d[0]
+                        - d[1] * d[1]
+                        - x[0] * x[0]
+                        + x[1] * x[1]
+                        - y[0] * y[0]
+                        + y[1] * y[1];
+
+        double D = 2 * (x[2] - x[1]);
+        double E = 2 * (y[2] - y[1]);
+
+        double F =
+                d[1] * d[1]
+                        - d[2] * d[2]
+                        - x[1] * x[1]
+                        + x[2] * x[2]
+                        - y[1] * y[1]
+                        + y[2] * y[2];
+
+        double denominator = A * E - B * D;
+
+        if (Math.abs(denominator) < 1e-12) {
+            throw new IllegalArgumentException(
+                    "Målepunkterne giver ingen stabil løsning.");
+        }
+
+        double epicenterX =
+                (C * E - B * F) / denominator;
+
+        double epicenterY =
+                (A * F - C * D) / denominator;
+
+        double epicenterLatRad =
+                refLatRad + epicenterY / earthRadius;
+
+        double epicenterLonRad =
+                refLonRad +
+                        epicenterX /
+                                (earthRadius * Math.cos(refLatRad));
+
+        return new double[]{
+                Math.toDegrees(epicenterLatRad),
+                Math.toDegrees(epicenterLonRad)
+        };
     }
 }
