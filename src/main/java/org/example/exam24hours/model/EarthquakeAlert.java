@@ -1,0 +1,117 @@
+package org.example.exam24hours.model;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class EarthquakeAlert {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private double epicenterLatitude;
+    private double epicenterLongitude;
+    private double estimatedMagnitude;
+
+    private String areaName;
+
+    private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private AlertStatus status;
+
+    @OneToMany(mappedBy = "earthquakeAlert")
+    @JsonManagedReference
+    private List<SensorReading> sensorReadings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "earthquakeAlert")
+    @JsonManagedReference
+    private List<UserReport> userReports = new ArrayList<>();
+
+    public EarthquakeAlert(){
+    }
+
+    public EarthquakeAlert(double epicenterLatitude, double epicenterLongitude, double estimatedMagnitude, AlertStatus status) {
+        this.epicenterLatitude = epicenterLatitude;
+        this.epicenterLongitude = epicenterLongitude;
+        this.estimatedMagnitude = estimatedMagnitude;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public double getEpicenterLatitude() {
+        return epicenterLatitude;
+    }
+
+    public void setEpicenterLatitude(double epicenterLatitude) {
+        this.epicenterLatitude = epicenterLatitude;
+    }
+
+    public double getEpicenterLongitude() {
+        return epicenterLongitude;
+    }
+
+    public void setEpicenterLongitude(double ecpicenterLongitude) {
+        this.epicenterLongitude = ecpicenterLongitude;
+    }
+
+    public double getEstimatedMagnitude() {
+        return estimatedMagnitude;
+    }
+
+    public void setEstimatedMagnitude(double estimatedMagnitude) {
+        this.estimatedMagnitude = estimatedMagnitude;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public AlertStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AlertStatus status) {
+        this.status = status;
+    }
+
+    public List<SensorReading> getSensorReadings() {
+        return sensorReadings;
+    }
+
+    public void setSensorReadings(List<SensorReading> sensorReadings) {
+        this.sensorReadings = sensorReadings;
+    }
+
+    public List<UserReport> getUserReports() {
+        return userReports;
+    }
+
+    public void setUserReports(List<UserReport> userReports) {
+        this.userReports = userReports;
+    }
+}
