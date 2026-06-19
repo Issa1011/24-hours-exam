@@ -26,11 +26,9 @@ public class EarthquakeAlert {
     private AlertStatus status;
 
     @OneToMany(mappedBy = "earthquakeAlert")
-    @JsonManagedReference
     private List<SensorReading> sensorReadings = new ArrayList<>();
 
     @OneToMany(mappedBy = "earthquakeAlert")
-    @JsonManagedReference
     private List<UserReport> userReports = new ArrayList<>();
 
     public EarthquakeAlert(){

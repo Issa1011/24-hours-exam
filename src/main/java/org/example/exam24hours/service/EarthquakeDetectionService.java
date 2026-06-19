@@ -63,7 +63,7 @@ public class EarthquakeDetectionService {
                 sensorReadingRepository.save(r);
             }
 
-            System.out.println("Aleart oprettet");
+            System.out.println("Alert oprettet");
 
         }catch (Exception e){
             System.out.println("Epicenter beregning fejlede");

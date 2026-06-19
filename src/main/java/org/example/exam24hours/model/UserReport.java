@@ -1,5 +1,7 @@
 package org.example.exam24hours.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ public class UserReport {
 
     @ManyToOne
     @JoinColumn(name = "alert_id")
+   @JsonIgnore
     private EarthquakeAlert earthquakeAlert;
 
     public UserReport(){

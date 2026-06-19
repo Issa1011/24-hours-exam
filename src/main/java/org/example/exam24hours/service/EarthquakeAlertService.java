@@ -4,18 +4,15 @@ import org.example.exam24hours.model.AlertStatus;
 import org.example.exam24hours.model.EarthquakeAlert;
 import org.example.exam24hours.repository.EarthquakeAlertRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 import java.util.List;
 
 @Service
 public class EarthquakeAlertService {
     private final EarthquakeAlertRepository earthquakeAlertRepository;
-    private final ResourceUrlProvider resourceUrlProvider;
 
-    public EarthquakeAlertService(EarthquakeAlertRepository earthquakeAlertRepository, ResourceUrlProvider resourceUrlProvider) {
+    public EarthquakeAlertService(EarthquakeAlertRepository earthquakeAlertRepository) {
         this.earthquakeAlertRepository = earthquakeAlertRepository;
-        this.resourceUrlProvider = resourceUrlProvider;
     }
 
     public List<EarthquakeAlert> getAllAlerts(){
@@ -49,9 +46,6 @@ public class EarthquakeAlertService {
         if (currentStatus == AlertStatus.ACTIVE && newStatus == AlertStatus.NOT_ACTIVE) {
 
             validTransition = true;
-
-            System.out.println("Current: " + currentStatus);
-            System.out.println("New: " + newStatus);
         }
         if (!validTransition) {
             throw new IllegalArgumentException("Invalid status transition");
