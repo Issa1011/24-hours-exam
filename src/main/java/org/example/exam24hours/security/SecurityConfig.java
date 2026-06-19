@@ -22,8 +22,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                                 .requestMatchers(HttpMethod.POST, "/api/sensor-data").permitAll()
-                                .requestMatchers("/login", "/logout").permitAll()
-
 
                                 .requestMatchers(HttpMethod.GET, "/api/alerts/active").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/alerts/*/reports").hasAnyRole("USER", "ADMIN")

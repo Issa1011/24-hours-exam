@@ -4,17 +4,46 @@
     <meta charset="UTF-8">
     <title>Seismic Monitor</title>
 </head>
+
 <body>
 
 <h1>Earthquake Alerts</h1>
 
-<button onclick="loadAlerts()">Load Alerts</button>
-<button onclick="loadActiveAlerts()">Load Active Alerts</button>
-<button onclick="loadReadings()">Load Readings</button>
-<button onclick="location.href='/logout'">Log ud</button>
 
+<h2>USER</h2>
+
+<button onclick="loadActiveAlerts()">
+    Load Active Alerts
+</button>
+
+
+<h2>ADMIN</h2>
+
+<button onclick="loadAlerts()">
+    Load All Alerts
+</button>
+
+<button onclick="loadReadings()">
+    Load Sensor Readings
+</button>
+
+
+<br><br>
+
+<button onclick="location.href='/logout'">
+    Log ud
+</button>
+
+
+<hr>
+
+<h2>Alerts</h2>
 <div id="alerts"></div>
+
+
+<h2>Output</h2>
 <div id="readings"></div>
+
 
 <script src="app.js"></script>
 
